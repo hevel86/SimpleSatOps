@@ -1,0 +1,61 @@
+secrets:
+  postgres_secret:
+    file: ./secrets/postgres_secret
+
+services:
+  joplin-server:
+    image: joplin/server:latest
+    container_name: joplin-server
+    restart: unless-stopped
+    #ports:
+    #  - 22300:22300
+    networks: 
+      - t3_proxy
+      - default
+    secrets:
+      - postgres_secret
+    depends_on: 
+      - postgres
+    env_file:
+      - .env
+    environment: 
+      - DB_CLIENT=pg #use pg to specify postgres vs sqlite3
+      - POSTGRES_PASSWORD=/run/secrets/postgres_secret
+      - POSTGRES_DATABASE=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PORT=5432
+      - POSTGRES_HOST=postgres
+      - APP_BASE_URL=$JOPLIN_URL
+      - APP_PORT=22300
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=t3_proxy"
+      - "traefik.http.routers.joplin.entrypoints=https"
+      - "traefik.http.routers.joplin.rule=Host(`joplin.$DOMAINNAME`)"
+      - "traefik.http.routers.joplin.tls=true"
+      - "traefik.http.services.joplin.loadbalancer.server.port=22300"
+
+  postgres:
+    image: postgres:13
+    restart: always
+    container_name: postgres
+    #ports: 
+    #  - 5432:5432
+    volumes: 
+      - ./postgres13_data:/var/lib/postgresql/data
+    networks:
+      - default
+    environment:
+      - APP_PORT=22300
+      - POSTGRES_PASSWORD=/run/secrets/postgres_secret
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+    secrets:
+      - postgres_secret
+
+networks:
+  default:
+    driver: bridge
+  
+  t3_proxy:
+    external: true
