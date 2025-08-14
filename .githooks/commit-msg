@@ -1,0 +1,14 @@
+#!/bin/bash
+set -euo pipefail
+
+MSG=$(cat "$1")
+PATTERN='^(feat|fix|docs|infra|ci|chore|refactor)(\([a-z0-9_-]+\))?: .+'
+
+if ! grep -Eq "$PATTERN" <<< "$MSG"; then
+    echo "❌ Commit message does not follow Conventional Commits format."
+    echo "Expected: type(scope): message"
+    echo "Examples:"
+    echo "  feat(sync): add rsync container"
+    echo "  docs(readme): update bootstrap instructions"
+    exit 1
+fi
