@@ -1,0 +1,13 @@
+#!/bin/bash
+set -euo pipefail
+
+# Skip merge and squash commits
+[[ "$2" == "merge" || "$2" == "squash" ]] && exit 0
+
+BRANCH=$(git symbolic-ref --quiet --short HEAD || echo "unknown")
+PREFIX="[$BRANCH]"
+
+# Only prepend if not already there
+if ! grep -qF "$PREFIX" "$1"; then
+    sed -i "1s|^|$PREFIX |" "$1"
+fi
