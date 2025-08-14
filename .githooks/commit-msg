@@ -2,13 +2,24 @@
 set -euo pipefail
 
 MSG=$(cat "$1")
-PATTERN='^(feat|fix|docs|infra|ci|chore|refactor)(\([a-z0-9_-]+\))?: .+'
+PATTERN='^(feat|fix|docs|infra|ci|chore|refactor)(\([a-z0-9_/-]+\))?: [a-z].+'
 
 if ! grep -Eq "$PATTERN" <<< "$MSG"; then
     echo "❌ Commit message does not follow Conventional Commits format."
-    echo "Expected: type(scope): message"
-    echo "Examples:"
+    echo ""
+    echo "🧠 Expected format:"
+    echo "  type(scope): lowercase summary"
+    echo ""
+    echo "✅ Examples:"
     echo "  feat(sync): add rsync container"
+    echo "  fix(env): correct env var loading order"
     echo "  docs(readme): update bootstrap instructions"
+    echo "  chore(pre-commit): add secret scanning hook"
+    echo ""
+    echo "📝 Your message:"
+    echo "  $MSG"
+    echo ""
+    echo "📚 Allowed types: feat, fix, docs, infra, ci, chore, refactor"
+    echo "📚 Allowed scope characters: lowercase a-z, 0-9, _, -, /"
     exit 1
 fi
