@@ -6,6 +6,7 @@
 ## Contents
 
 - `docker/` – Docker Compose service definitions
+- `scripts/` – Utility and automation scripts
 
 ## Philosophy
 
@@ -15,3 +16,11 @@ This repo complements `BrainiacOps`, focusing on minimalism, resilience, and low
 
 1. Copy `.env.example` to `.env` and adjust settings.
 2. Run `docker compose up -d` in each service directory.
+
+## Bootstrap
+
+To initialize the repo after cloning:
+
+```bash
+./scripts/bootstrap.sh
+```
