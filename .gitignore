@@ -2,11 +2,23 @@
 **/*secret*.yaml
 **/*auth*.yaml
 **/*cred*.yaml
+secrets
+
+# Ignore docker data files
+*data*
 
 # Ignore sensitive config files
 **/*.env
 **/.env
 .envrc
+*config*
+
+# Ignore databases
+*postgres*
+*mysql*
+*sqlite*
+*redis*
+*mongodb*
 
 # Ignore private keys and certs
 **/*.pem
@@ -38,9 +50,16 @@ dist/
 build/
 tmp/
 .cache/
+*cache*
+
+# Ignore cloudflare tokens
+cf_api_token.txt
 
 # Ignore backup files
 *~
 *.bak
 *.orig
 *.tmp
+
+# Ignore certain directories in the docker stack.. for now
+docker/authentik
