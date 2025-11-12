@@ -1,0 +1,24 @@
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    volumes:
+      - ./uptime_kuma_data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+#    ports:
+#      - 3001:3001
+    restart: always
+    networks:
+      - t3_proxy
+    security_opt:
+      - no-new-privileges:true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.uptime-kuma.rule=Host(`uptime-kuma.${DOMAINNAME}`)"
+      - "traefik.http.routers.uptime-kuma.entrypoints=https"
+      - "traefik.http.routers.uptime-kuma.tls=true"
+      - "traefik.http.services.uptime-kuma.loadbalancer.server.port=3001"      
+    
+networks:
+  t3_proxy:
+    external: true
