@@ -6,6 +6,7 @@ secrets
 
 # Ignore docker data files
 *data*
+*uploads*
 
 # Ignore sensitive config files
 **/*.env
