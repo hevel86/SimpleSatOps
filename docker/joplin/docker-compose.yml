@@ -4,7 +4,7 @@ secrets:
 
 services:
   joplin-server:
-    image: joplin/server:latest
+    image: joplin/server:3.5.2
     container_name: joplin-server
     restart: unless-stopped
     #ports:
