@@ -1,0 +1,27 @@
+services:
+  wishlist:
+    container_name: wishlist
+    image: ghcr.io/cmintey/wishlist:v0.60.0
+    ports:
+      - 3280:3280
+    volumes:
+      - ./uploads:/usr/src/app/uploads  # This is where user image uploads will be stored
+      - ./data:/usr/src/app/data        # This is where the sqlite database will be stored
+    environment:
+      ORIGIN: https://wishlist.botty-mcbotface.com
+      #ORIGIN: http://192.168.2.10:3280 # The URL your users will be connecting to
+      TOKEN_TIME: 72 # hours until signup and password reset tokens expire
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=t3_proxy"
+      - "traefik.http.routers.wishlist.entrypoints=https"
+      - "traefik.http.routers.wishlist.rule=Host(`wishlist.$DOMAINNAME`)"
+      - "traefik.http.routers.wishlist.tls=true"
+      - "traefik.http.services.wishlist.loadbalancer.server.port=3280"
+    restart: always
+    networks:
+      - t3_proxy
+
+networks:
+  t3_proxy:
+    external: true
