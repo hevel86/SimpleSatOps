@@ -1,7 +1,7 @@
 services:
   hbbs:
     container_name: hbbs
-    image: rustdesk/rustdesk-server:latest
+    image: rustdesk/rustdesk-server:1.1.15
     command: hbbs
     volumes:
       - ./data:/root
@@ -13,7 +13,7 @@ services:
 
   hbbr:
     container_name: hbbr
-    image: rustdesk/rustdesk-server:latest
+    image: rustdesk/rustdesk-server:1.1.15
     command: hbbr
     volumes:
       - ./data:/root
