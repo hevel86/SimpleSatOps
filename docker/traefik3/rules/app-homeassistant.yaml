@@ -1,0 +1,16 @@
+http:
+  routers:
+    homeassistant-rtr:
+      entryPoints:
+        - https
+      rule: "Host(`homeassistant.botty-mcbotface.com`)"
+      service: homeassistant-svc
+      tls:
+        certResolver: cloudflare
+
+  services:
+    homeassistant-svc:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://homeassistant.torquasmvo.internal:8123"
