@@ -1,17 +1,12 @@
-# SimpleSatOps
+# Gemini Code Assistant Context
 
-**Description:** This repository, `SimpleSatOps`, is a lightweight collection of satellite services for a remote VPS. It is designed for minimalism, resilience, and low-touch services, making it ideal for external-facing tools, backups, and remote monitoring. The repository primarily consists of Docker Compose service definitions and utility scripts. This is an operations/infrastructure project, not a traditional code project.
+This document provides context for the Gemini Code Assistant to understand the `SimpleSatOps` repository.
 
-**Tagline:** SimpleSatOps – keeping things stable on the edge of the system.
+## Directory Overview
 
-## Contents
+This repository, `SimpleSatOps`, is a lightweight collection of satellite services for a remote VPS. It is designed for minimalism, resilience, and low-touch services, making it ideal for external-facing tools, backups, and remote monitoring. The repository primarily consists of Docker Compose service definitions and utility scripts. This is an operations/infrastructure project, not a traditional code project.
 
-- `docker/` – Docker Compose service definitions
-- `scripts/` – Utility and automation scripts
-
-## Philosophy
-
-This repo complements `BrainiacOps`, focusing on minimalism, resilience, and low-touch services. Ideal for external-facing tools, backups, and remote monitoring.
+All services are containerized and managed through Docker Compose.
 
 ## Architecture
 
