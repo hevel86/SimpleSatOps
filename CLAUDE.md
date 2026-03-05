@@ -48,9 +48,8 @@ Traefik uses **named tags** (codenames) that track minor version branches:
 - More stable for production deployments
 
 **Docker API Compatibility:**
-- Traefik requires environment variables `DOCKER_API_VERSION` and `DOCKER_MIN_API_VERSION` set in docker-compose.yml
-- Current daemon requires API version 1.44+ (set `DOCKER_API_VERSION: "1.52"` and `DOCKER_MIN_API_VERSION: "1.44"`)
-- If you see "client version X.XX is too old" errors, check for newer Traefik image version first before modifying configs
+- If you see "client version X.XX is too old" errors, check for a newer Traefik image version first before modifying configs
+- If a newer image isn't available, add `DOCKER_API_VERSION: "1.52"` and `DOCKER_MIN_API_VERSION: "1.44"` under `environment:` in the traefik compose file as a workaround
 
 ### Traefik Label Pattern
 Services use these labels for routing:
@@ -60,6 +59,35 @@ traefik.http.routers.<name>.rule=Host(`<subdomain>.${DOMAINNAME}`)
 traefik.http.routers.<name>.entrypoints=https
 traefik.http.routers.<name>.tls=true
 traefik.http.services.<name>.loadbalancer.server.port=<internal-port>
+```
+
+Add `traefik.docker.network=t3_proxy` when a container connects to multiple Docker networks (e.g., both `t3_proxy` and a service-specific network) so Traefik uses the correct interface.
+
+The `sslheader@docker` middleware (referenced by some services like ntfy) injects `X-Forwarded-Proto: https`. It is defined globally in the traefik container's own labels:
+```
+traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
+```
+
+`serversTransport.insecureSkipVerify: true` is set in `data/traefik.yml`, enabling routing to backends (e.g., internal HTTPS services) that use self-signed certificates.
+
+### Routing Non-Docker / External Services
+Services not running in Docker (e.g., Home Assistant on an internal network) can be routed through Traefik via the file provider. Add a YAML file to `docker/traefik3/rules/` (auto-reloaded):
+```yaml
+http:
+  routers:
+    myservice-rtr:
+      entryPoints:
+        - https
+      rule: "Host(`myservice.example.com`)"
+      service: myservice-svc
+      tls:
+        certResolver: cloudflare
+  services:
+    myservice-svc:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://host.internal.network:port"
 ```
 
 ## Development Commands
