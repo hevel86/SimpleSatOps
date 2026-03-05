@@ -7,7 +7,8 @@
       "Bash(docker inspect:*)",
       "Bash(docker exec:*)",
       "Bash(docker compose:*)",
-      "Bash(docker pull:*)"
+      "Bash(docker pull:*)",
+      "WebFetch(domain:docs.ntfy.sh)"
     ],
     "deny": [],
     "ask": []
