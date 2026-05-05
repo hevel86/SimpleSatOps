@@ -23,7 +23,14 @@ Each service lives in `docker/[service-name]/` containing:
 - `secrets/` or token files - sensitive values loaded via Docker secrets or `_FILE` pattern
 - Persistent data directories - kept alongside compose file, never committed
 
-Available services: traefik3, uptime_kuma, joplin, it-tools, ntfy, portainer, rustdesk, semaphoreui, wishlist
+Available services: traefik3, uptime_kuma, joplin, ntfy, portainer, rustdesk, wishlist
+
+### ntfy Topics & Access
+The `ntfy` service handles notifications for various services. Key topics include:
+- `ups`: Used for UPS monitoring (e.g., via Nutify on k8s). Requires `ntfy_user` authentication.
+- `uptime-kuma`: Alerts from Uptime Kuma.
+- `ssh_logins`: Security alerts for remote access.
+- Wildcards like `up*` are also used for broader access.
 
 ### Traefik Configuration
 Traefik lives in `docker/traefik3/` with:

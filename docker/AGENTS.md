@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- Each service lives in its own directory (e.g., `traefik3`, `uptime_kuma`, `joplin`, `it-tools`, `ntfy`, `portainer`, `rustdesk`, `semaphoreui`, `wishlist`). Each contains a `docker-compose.yml` and typically a `.env` for overrides and a `secrets/` or token file when needed.
+- Each service lives in its own directory (e.g., `traefik3`, `uptime_kuma`, `joplin`, `ntfy`, `portainer`, `rustdesk`, `wishlist`). Each contains a `docker-compose.yml` and typically a `.env` for overrides and a `secrets/` or token file when needed.
 - Persistent data folders (e.g., `joplin/postgres13_data`, `uptime_kuma/uptime_kuma_data`) are kept alongside the compose file; avoid committing generated volume contents.
 - Most stacks join the external `t3_proxy` network to be routed by Traefik; ensure that network exists (`docker network create t3_proxy`) before bringing up new services.
 
